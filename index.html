@@ -488,30 +488,53 @@
 </div>
 
 <script>
-  function showPage(id) {
+(function(){
+  const defaultPage = 'home';
+
+  function setPage(id, push = true) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
+    const el = document.getElementById('page-' + id);
+    if (el) el.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (push) {
+      history.pushState({ page: id }, '', '#' + id);
+    }
   }
 
-  function toggleMenu() {
+  // expose for inline handlers
+  window.showPage = function(id) { setPage(id, true); };
+
+  window.toggleMenu = function() {
     document.getElementById('hamburger').classList.toggle('open');
     document.getElementById('dropdown').classList.toggle('open');
-  }
+  };
 
-  function closeMenu() {
+  window.closeMenu = function() {
     document.getElementById('hamburger').classList.remove('open');
     document.getElementById('dropdown').classList.remove('open');
-  }
+  };
 
-  function openModal()  { document.getElementById('modal').classList.add('open'); }
-  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  window.openModal = function()  { document.getElementById('modal').classList.add('open'); };
+  window.closeModal = function() { document.getElementById('modal').classList.remove('open'); };
 
+  // close modal when clicking overlay
   document.getElementById('modal').addEventListener('click', closeModal);
+
+  // handle browser back/forward
+  window.addEventListener('popstate', (e) => {
+    const page = (e.state && e.state.page) || location.hash.replace('#','') || defaultPage;
+    setPage(page, false);
+  });
+
+  // initialize based on hash or default, replace initial state
+  const initial = location.hash.replace('#','') || defaultPage;
+  history.replaceState({ page: initial }, '', '#' + initial);
+  setPage(initial, false);
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { closeModal(); closeMenu(); }
   });
+})();
 </script>
 
 </body>
