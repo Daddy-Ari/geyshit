@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeyShyT</title>
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: #11111b;
+      border-bottom: 1px solid #313244;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+    }
+
+    .logo {
+      color: #cba6f7;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid #cba6f7;
+      color: #cba6f7;
+      padding: .4rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: .85rem;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 3px;
+    }
+
+    .hamburger span {
+      transform-origin: center;
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #cba6f7;
+      border-radius: 2px;
+      transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .dropdown {
+      position: absolute;
+      top: 64px;
+      right: 0;
+      width: 200px;
+      background: #11111b;
+      border: 1px solid #313244;
+      display: none;
+    }
+    .dropdown.open { display: block; }
+
+    .dropdown a {
+      display: block;
+      padding: .9rem 1.5rem;
+      color: #a6adc8;
+      text-decoration: none;
+      border-bottom: 1px solid #313244;
+      cursor: pointer;
+    }
+    .dropdown a:hover { background: #181825; color: #cdd6f4; }
+
+    main {
+      padding-top: 64px;
+      min-height: 100vh;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: calc(100vh - 64px);
+      padding: 4rem 2rem;
+      gap: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #cba6f7;
+    }
+
+    .hero-desc {
+      max-width: 520px;
+      color: #6c7086;
+      line-height: 1.8;
+    }
+
+    .hero-cats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      padding: .75rem 1.5rem;
+      border: 1px solid;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: .95rem;
+    }
+    .cat-btn.heal   { border-color: #a6e3a1; color: #a6e3a1; }
+    .cat-btn.revive { border-color: #f38ba8; color: #f38ba8; }
+    .cat-btn.buff   { border-color: #f9e2af; color: #f9e2af; }
+
+    .content-page {
+      padding: 4rem 2rem 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-header h2 {
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+
+    .page-header p {
+      color: #a6adc8;
+    }
+
+    #page-heal  .page-header h2 { color: #a6e3a1; }
+    #page-revive .page-header h2 { color: #f38ba8; }
+    #page-buff  .page-header h2 { color: #f9e2af; }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #313244;
+      border: 1px solid #45475a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .card-img {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: #181825;
+    }
+
+    .card-body { padding: 1.25rem; }
+
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: .75rem;
+    }
+
+    .card-effect {
+      display: inline-block;
+      font-size: .8rem;
+      padding: .25rem .75rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    
+    #page-heal  .card-effect { background: #1a2e1a; color: #a6e3a1; }
+    #page-revive .card-effect { background: #2e1a1e; color: #f38ba8; }
+    #page-buff  .card-effect { background: #2e2a1a; color: #f9e2af; }
+
+    .section-label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #6c7086;
+      margin-top: 1rem;
+      margin-bottom: .4rem;
+    }
+
+    .ingredient-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+    .ingredient-list li {
+      color: #a6adc8;
+      font-size: .88rem;
+      padding-left: .75rem;
+    }
+    .ingredient-list li::before {
+      content: '· ';
+      color: #6c7086;
+    }
+
+    .steps-list {
+      list-style: none;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+    .steps-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: .6rem;
+      color: #a6adc8;
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+    .steps-list li::before {
+      content: counter(steps) '.';
+      color: #cba6f7;
+      min-width: 20px;
+      flex-shrink: 0;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #181825;
+      border: 1px solid #45475a;
+      border-radius: 12px;
+      padding: 2rem;
+      width: min(400px, calc(100vw - 2rem));
+      position: relative;
+    }
+
+    .modal h3 {
+      color: #cba6f7;
+      font-size: 1.3rem;
+      margin-bottom: .4rem;
+    }
+
+    .modal > p {
+      color: #6c7086;
+      font-size: .85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none;
+      border: none;
+      color: #6c7086;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .form-group label {
+      display: block;
+      font-size: .8rem;
+      color: #a6adc8;
+      margin-bottom: .4rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: #313244;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      padding: .7rem 1rem;
+      color: #cdd6f4;
+      font-size: .9rem;
+      outline: none;
+    }
+    .form-group input:focus { border-color: #cba6f7; }
+
+    .btn-submit {
+      width: 100%;
+      background: #cba6f7;
+      border: none;
+      border-radius: 6px;
+      padding: .8rem;
+      color: #11111b;
+      font-size: .95rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: .5rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.5rem; }
+      .hero-cats { flex-direction: column; }
+      .recipe-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" onclick="showPage('home')">GeyShyT</a>
+  <div class="nav-right">
+    <button class="btn-login" onclick="openModal()">Přihlásit se</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="dropdown" id="dropdown">
+    <a onclick="showPage('heal'); closeMenu()">💚 Léčení</a>
+    <a onclick="showPage('revive'); closeMenu()">❤️‍🔥 Oživení</a>
+    <a onclick="showPage('buff'); closeMenu()">⚡ Vylepšení</a>
+  </div>
+</nav>
+
+<main>
+
+  <div id="page-home" class="page active">
+    <section class="hero">
+      <h1>GeyShyT</h1>
+      <p class="hero-desc">
+        Průvodce vařením pro dobrodruhy ve světě Teyvatu.
+      </p>
+      <div class="hero-cats">
+        <button class="cat-btn heal"   onclick="showPage('heal')">💚 Léčení</button>
+        <button class="cat-btn revive" onclick="showPage('revive')">❤️‍🔥 Oživení</button>
+        <button class="cat-btn buff"   onclick="showPage('buff')">⚡ Vylepšení</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="page-heal" class="page">
+    <div class="content-page">
+      <div class="page-header">
+        <h2>💚 Léčení</h2>
+        <p>Jídla, která postavám obnoví ztracené životy</p>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="card">
+          <div class="card-img">🍙</div>
+          <div class="card-body">
+            <div class="card-name">Smažená rybí bulka</div>
+            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ryba × 3</li>
+              <li>Mouka × 3</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div id="page-revive" class="page">
+    <div class="content-page">
+      <div class="page-header">
+        <h2>❤️‍🔥 Oživení</h2>
+        <p>Jídla, která vrátí do boje padlé postavy.</p>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="card">
+          <div class="card-img">🧁</div>
+          <div class="card-body">
+            <div class="card-name">Teyvat smažené vejce</div>
+            <span class="card-effect">❤️ Oživí 1 postavu na 15 % HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Vejce × 2</li>
+              <li>Olej × 1</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+
+  <div id="page-buff" class="page">
+    <div class="content-page">
+      <div class="page-header">
+        <h2>⚡ Vylepšení</h2>
+        <p>Jídla, která posílí statistiky tvého týmu v boji.</p>
+      </div>
+      <div class="recipe-grid">
+        <div class="card">
+          <div class="card-img">🍛</div>
+          <div class="card-body">
+            <div class="card-name">Radikální jemný vývar</div>
+            <span class="card-effect">⚡ ATK +95 po dobu 300 sekund</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Maso × 3</li>
+              <li>Koření × 2</li>
+              <li>Voda × 2</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Přihlásit se</h3>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" placeholder="tvuj@email.cz">
+    </div>
+    <div class="form-group">
+      <label>Heslo</label>
+      <input type="password" placeholder="• • • • • • • •">
+    </div>
+    <button class="btn-submit">Přihlásit se</button>
+  </div>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('dropdown').classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('dropdown').classList.remove('open');
+  }
+
+  function openModal()  { document.getElementById('modal').classList.add('open'); }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+  document.getElementById('modal').addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeModal(); closeMenu(); }
+  });
+</script>
+
+</body>
+</html>
