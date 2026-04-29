@@ -207,24 +207,48 @@
     }
 
     .cat-btn {
-      padding: .85rem 1.6rem;
-      border-radius: 10px;
-      background: rgba(49, 50, 68, 0.3);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(205, 214, 244, 0.1);
+      padding: 1.2rem 2.2rem;
+      border-radius: 12px;
+      background: rgba(49, 50, 68, 0.5);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(205, 214, 244, 0.15);
       cursor: pointer;
-      font-size: .95rem;
-      transition: all 0.25s ease;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
     .cat-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      border-width: 2px;
+    }
+
+    .cat-btn:hover::before {
+      opacity: 1;
     }
 
     .cat-btn.heal   { border-color: #a6e3a1; color: #a6e3a1; }
+    .cat-btn.heal:hover { background: rgba(166, 227, 161, 0.15); box-shadow: 0 12px 35px rgba(166, 227, 161, 0.3); }
+    
     .cat-btn.revive { border-color: #f38ba8; color: #f38ba8; }
+    .cat-btn.revive:hover { background: rgba(243, 139, 168, 0.15); box-shadow: 0 12px 35px rgba(243, 139, 168, 0.3); }
+    
     .cat-btn.buff   { border-color: #f9e2af; color: #f9e2af; }
+    .cat-btn.buff:hover { background: rgba(249, 226, 175, 0.15); box-shadow: 0 12px 35px rgba(249, 226, 175, 0.3); }
 
     .content-page {
       padding: 4rem 2rem 6rem;
@@ -300,19 +324,32 @@
       font-size: 1.05rem;
       font-weight: bold;
       margin-bottom: .75rem;
+      transition: color 0.3s ease;
     }
+
+    #page-heal .card:hover .card-name { color: #a6e3a1; }
+    #page-revive .card:hover .card-name { color: #f38ba8; }
+    #page-buff .card:hover .card-name { color: #f9e2af; }
 
     .card-effect {
       display: inline-block;
       font-size: .8rem;
-      padding: .25rem .75rem;
+      padding: .4rem .9rem;
       border-radius: 100px;
       margin-bottom: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(205, 214, 244, 0.1);
     }
 
-    #page-heal  .card-effect { background: #1a2e1a; color: #a6e3a1; }
-    #page-revive .card-effect { background: #2e1a1e; color: #f38ba8; }
-    #page-buff  .card-effect { background: #2e2a1a; color: #f9e2af; }
+    #page-heal  .card-effect { background: rgba(166, 227, 161, 0.12); color: #a6e3a1; border-color: rgba(166, 227, 161, 0.25); }
+    #page-heal .card:hover .card-effect { background: rgba(166, 227, 161, 0.2); border-color: rgba(166, 227, 161, 0.4); }
+    
+    #page-revive .card-effect { background: rgba(243, 139, 168, 0.12); color: #f38ba8; border-color: rgba(243, 139, 168, 0.25); }
+    #page-revive .card:hover .card-effect { background: rgba(243, 139, 168, 0.2); border-color: rgba(243, 139, 168, 0.4); }
+    
+    #page-buff  .card-effect { background: rgba(249, 226, 175, 0.12); color: #f9e2af; border-color: rgba(249, 226, 175, 0.25); }
+    #page-buff .card:hover .card-effect { background: rgba(249, 226, 175, 0.2); border-color: rgba(249, 226, 175, 0.4); }
 
     .section-label {
       font-size: .75rem;
@@ -321,7 +358,12 @@
       color: #6c7086;
       margin-top: 1rem;
       margin-bottom: .4rem;
+      transition: color 0.3s ease;
     }
+
+    #page-heal .card:hover .section-label { color: #a6e3a1; }
+    #page-revive .card:hover .section-label { color: #f38ba8; }
+    #page-buff .card:hover .section-label { color: #f9e2af; }
 
     .ingredient-list {
       list-style: none;
@@ -333,11 +375,22 @@
       color: #a6adc8;
       font-size: .88rem;
       padding-left: .75rem;
+      transition: all 0.25s ease;
     }
     .ingredient-list li::before {
       content: '· ';
       color: #6c7086;
+      transition: color 0.25s ease;
     }
+
+    #page-heal .card:hover .ingredient-list li { color: #cdd6f4; }
+    #page-heal .card:hover .ingredient-list li::before { color: #a6e3a1; }
+    
+    #page-revive .card:hover .ingredient-list li { color: #cdd6f4; }
+    #page-revive .card:hover .ingredient-list li::before { color: #f38ba8; }
+    
+    #page-buff .card:hover .ingredient-list li { color: #cdd6f4; }
+    #page-buff .card:hover .ingredient-list li::before { color: #f9e2af; }
 
     .steps-list {
       list-style: none;
@@ -353,13 +406,24 @@
       color: #a6adc8;
       font-size: .88rem;
       line-height: 1.6;
+      transition: all 0.25s ease;
     }
     .steps-list li::before {
       content: counter(steps) '.';
       color: #cba6f7;
       min-width: 20px;
       flex-shrink: 0;
+      transition: color 0.25s ease;
     }
+
+    #page-heal .card:hover .steps-list li { color: #cdd6f4; }
+    #page-heal .card:hover .steps-list li::before { color: #a6e3a1; }
+    
+    #page-revive .card:hover .steps-list li { color: #cdd6f4; }
+    #page-revive .card:hover .steps-list li::before { color: #f38ba8; }
+    
+    #page-buff .card:hover .steps-list li { color: #cdd6f4; }
+    #page-buff .card:hover .steps-list li::before { color: #f9e2af; }
 
     @media (max-width: 600px) {
       .hero h1 { font-size: 2.5rem; }
@@ -402,14 +466,14 @@
   </div>
 
   <div id="page-heal" class="page">
-    <div class="content-page">
-      <div class="page-header">
+    <section class="content-page">
+      <header class="page-header">
         <h2>💚 Léčení</h2>
         <p>Jídla, která postavám obnoví ztracené životy</p>
-      </div>
+      </header>
       <div class="recipe-grid">
 
-        <div class="card">
+        <article class="card">
           <div class="card-img">🍙</div>
           <div class="card-body">
             <div class="card-name">Smažená rybí bulka</div>
@@ -427,21 +491,101 @@
               <li>bla bla</li>
             </ol>
           </div>
-        </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img">🍙</div>
+          <div class="card-body">
+            <div class="card-name">Smažená rybí bulka</div>
+            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ryba × 3</li>
+              <li>Mouka × 3</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img">🍙</div>
+          <div class="card-body">
+            <div class="card-name">Smažená rybí bulka</div>
+            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ryba × 3</li>
+              <li>Mouka × 3</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img">🍙</div>
+          <div class="card-body">
+            <div class="card-name">Smažená rybí bulka</div>
+            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ryba × 3</li>
+              <li>Mouka × 3</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img">🍙</div>
+          <div class="card-body">
+            <div class="card-name">Smažená rybí bulka</div>
+            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ryba × 3</li>
+              <li>Mouka × 3</li>
+              <li>Sůl × 1</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </article>
 
       </div>
-    </div>
+    </section>
   </div>
 
   <div id="page-revive" class="page">
-    <div class="content-page">
-      <div class="page-header">
+    <section class="content-page">
+      <header class="page-header">
         <h2>❤️‍🔥 Oživení</h2>
         <p>Jídla, která vrátí do boje padlé postavy.</p>
-      </div>
+      </header>
       <div class="recipe-grid">
 
-        <div class="card">
+        <article class="card">
           <div class="card-img">🧁</div>
           <div class="card-body">
             <div class="card-name">Teyvat smažené vejce</div>
@@ -459,21 +603,21 @@
               <li>bla bla</li>
             </ol>
           </div>
-        </div>
+        </article>
 
       </div>
-    </div>
+    </section>
   </div>
 
   <div id="page-buff" class="page">
-    <div class="content-page">
-      <div class="page-header">
+    <section class="content-page">
+      <header class="page-header">
         <h2>⚡ Vylepšení</h2>
         <p>Jídla, která posílí statistiky tvého týmu v boji.</p>
-      </div>
+      </header>
       <div class="recipe-grid">
 
-        <div class="card">
+        <article class="card">
           <div class="card-img">🍛</div>
           <div class="card-body">
             <div class="card-name">Radikální jemný vývar</div>
@@ -491,30 +635,10 @@
               <li>bla bla</li>
             </ol>
           </div>
-        </div>
-
-        <div class="card">
-          <div class="card-img">🍛</div>
-          <div class="card-body">
-            <div class="card-name">Radikální jemný vývar</div>
-            <span class="card-effect">⚡ ATK +95 po dobu 300 sekund</span>
-            <div class="section-label">Ingredience</div>
-            <ul class="ingredient-list">
-              <li>Maso × 3</li>
-              <li>Koření × 2</li>
-              <li>Voda × 2</li>
-            </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
-          </div>
-        </div>
+        </article>
 
       </div>
-    </div>
+    </section>
   </div>
 
 </main>
