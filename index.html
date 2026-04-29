@@ -47,8 +47,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 64px;
-          backdrop-filter: blur(10px);
-
+      backdrop-filter: blur(10px);
       background: rgba(17, 17, 26, 0.4);
       border-bottom: 1px solid #313244;
       display: flex;
@@ -85,45 +84,89 @@
     .hamburger {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px 11px;
+      border-radius: 8px;
+      background: rgba(24, 24, 37, 0.95);
+      border: 0.5px solid #313244;
       cursor: pointer;
-      padding: 3px;
+      transition: background 0.15s ease, border-color 0.2s ease;
+    }
+
+    .hamburger:hover {
+      background: rgba(30, 30, 46, 0.95);
     }
 
     .hamburger span {
-      transform-origin: center;
-      display: block;
-      width: 24px;
+      width: 20px;
       height: 2px;
-      background: #cba6f7;
+      background: #6c6c7e;
       border-radius: 2px;
-      transition: all .3s;
+      display: block;
+      transition: transform 0.25s ease, opacity 0.2s ease, background 0.2s ease;
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .hamburger:hover span {
+      background: #cba6f7;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     .dropdown {
       position: absolute;
       top: 64px;
       right: 0;
       width: 200px;
-      background: rgba(17, 17, 26, 0.4);
-      backdrop-filter: blur(4px);
+      background: rgba(17, 17, 26, 0.92);
+      backdrop-filter: blur(10px);
       border: 1px solid #313244;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
       display: none;
+      overflow: hidden;
     }
     .dropdown.open { display: block; }
 
     .dropdown a {
       display: block;
       padding: .9rem 1.5rem;
-      color: #a6adc8;
       text-decoration: none;
-      border-bottom: 1px solid #313244;
+      border-bottom: 1px solid #1e1e2e;
       cursor: pointer;
+      font-size: .9rem;
+      transition: background 0.15s ease;
     }
-    .dropdown a:hover { background: #181825; color: #cdd6f4; }
+    .dropdown a:last-child { border-bottom: none; }
+
+    .dropdown a.link-heal {
+      color: #a6e3a1;
+    }
+    .dropdown a.link-heal:hover {
+      background: rgba(166, 227, 161, 0.07);
+      border-left: 2px solid #a6e3a1;
+      box-shadow: inset 0 0 12px rgba(166, 227, 161, 0.08);
+    }
+
+    .dropdown a.link-revive {
+      color: #f38ba8;
+    }
+    .dropdown a.link-revive:hover {
+      background: rgba(243, 139, 168, 0.07);
+      border-left: 2px solid #f38ba8;
+      box-shadow: inset 0 0 12px rgba(243, 139, 168, 0.08);
+    }
+
+    .dropdown a.link-buff {
+      color: #f9e2af;
+    }
+    .dropdown a.link-buff:hover {
+      background: rgba(249, 226, 175, 0.07);
+      border-left: 2px solid #f9e2af;
+      box-shadow: inset 0 0 12px rgba(249, 226, 175, 0.08);
+    }
 
     main {
       padding-top: 64px;
@@ -164,13 +207,21 @@
     }
 
     .cat-btn {
-      padding: .75rem 1.5rem;
-      border: 1px solid;
-      border-radius: 8px;
-      background: transparent;
+      padding: .85rem 1.6rem;
+      border-radius: 10px;
+      background: rgba(49, 50, 68, 0.3);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(205, 214, 244, 0.1);
       cursor: pointer;
       font-size: .95rem;
+      transition: all 0.25s ease;
     }
+
+    .cat-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
     .cat-btn.heal   { border-color: #a6e3a1; color: #a6e3a1; }
     .cat-btn.revive { border-color: #f38ba8; color: #f38ba8; }
     .cat-btn.buff   { border-color: #f9e2af; color: #f9e2af; }
@@ -206,11 +257,32 @@
     }
 
     .card {
-      background: #313244;
-      backdrop-filter: blur(4px);
-      border: 1px solid #45475a;
-      border-radius: 8px;
+      background: rgba(49, 50, 68, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(205, 214, 244, 0.08);
+      border-radius: 12px;
       overflow: hidden;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    #page-heal .card:hover {
+      border-color: #a6e3a1;
+      box-shadow: 0 10px 30px rgba(166, 227, 161, 0.25);
+    }
+
+    #page-revive .card:hover {
+      border-color: #f38ba8;
+      box-shadow: 0 10px 30px rgba(243, 139, 168, 0.25);
+    }
+
+    #page-buff .card:hover {
+      border-color: #f9e2af;
+      box-shadow: 0 10px 30px rgba(249, 226, 175, 0.25);
     }
 
     .card-img {
@@ -218,8 +290,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4rem;
-      background: #181825;
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #181825, #1e1e2e);
     }
 
     .card-body { padding: 1.25rem; }
@@ -237,7 +309,7 @@
       border-radius: 100px;
       margin-bottom: 1rem;
     }
-    
+
     #page-heal  .card-effect { background: #1a2e1a; color: #a6e3a1; }
     #page-revive .card-effect { background: #2e1a1e; color: #f38ba8; }
     #page-buff  .card-effect { background: #2e2a1a; color: #f9e2af; }
@@ -289,7 +361,6 @@
       flex-shrink: 0;
     }
 
-
     @media (max-width: 600px) {
       .hero h1 { font-size: 2.5rem; }
       .hero-cats { flex-direction: column; }
@@ -308,9 +379,9 @@
     </div>
   </div>
   <div class="dropdown" id="dropdown">
-    <a onclick="showPage('heal'); closeMenu()">💚 Léčení</a>
-    <a onclick="showPage('revive'); closeMenu()">❤️‍🔥 Oživení</a>
-    <a onclick="showPage('buff'); closeMenu()">⚡ Vylepšení</a>
+    <a class="link-heal"   onclick="showPage('heal');   closeMenu()">💚 Léčení</a>
+    <a class="link-revive" onclick="showPage('revive'); closeMenu()">❤️‍🔥 Oživení</a>
+    <a class="link-buff"   onclick="showPage('buff');   closeMenu()">⚡ Vylepšení</a>
   </div>
 </nav>
 
@@ -361,6 +432,7 @@
       </div>
     </div>
   </div>
+
   <div id="page-revive" class="page">
     <div class="content-page">
       <div class="page-header">
@@ -389,7 +461,6 @@
           </div>
         </div>
 
-        
       </div>
     </div>
   </div>
@@ -401,6 +472,7 @@
         <p>Jídla, která posílí statistiky tvého týmu v boji.</p>
       </div>
       <div class="recipe-grid">
+
         <div class="card">
           <div class="card-img">🍛</div>
           <div class="card-body">
@@ -420,7 +492,27 @@
             </ol>
           </div>
         </div>
-        
+
+        <div class="card">
+          <div class="card-img">🍛</div>
+          <div class="card-body">
+            <div class="card-name">Radikální jemný vývar</div>
+            <span class="card-effect">⚡ ATK +95 po dobu 300 sekund</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Maso × 3</li>
+              <li>Koření × 2</li>
+              <li>Voda × 2</li>
+            </ul>
+            <div class="section-label">Postup</div>
+            <ol class="steps-list">
+              <li>bla bla</li>
+              <li>bla bla</li>
+              <li>bla bla</li>
+            </ol>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -437,12 +529,12 @@
     const el = document.getElementById('page-' + id);
     if (el) el.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.setAttribute("data-page", id);
     if (push) {
       history.pushState({ page: id }, '', '#' + id);
     }
   }
 
-  // expose for inline handlers
   window.showPage = function(id) { setPage(id, true); };
 
   window.toggleMenu = function() {
@@ -455,13 +547,11 @@
     document.getElementById('dropdown').classList.remove('open');
   };
 
-  // handle browser back/forward
   window.addEventListener('popstate', (e) => {
     const page = (e.state && e.state.page) || location.hash.replace('#','') || defaultPage;
     setPage(page, false);
   });
 
-  // initialize based on hash or default, replace initial state
   const initial = location.hash.replace('#','') || defaultPage;
   history.replaceState({ page: initial }, '', '#' + initial);
   setPage(initial, false);
