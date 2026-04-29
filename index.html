@@ -71,16 +71,6 @@
       gap: 1rem;
     }
 
-    .btn-login {
-      background: transparent;
-      border: 1px solid #cba6f7;
-      color: #cba6f7;
-      padding: .4rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: .85rem;
-    }
-
     .hamburger {
       display: flex;
       flex-direction: column;
@@ -207,48 +197,24 @@
     }
 
     .cat-btn {
-      padding: 1.2rem 2.2rem;
-      border-radius: 12px;
-      background: rgba(49, 50, 68, 0.5);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(205, 214, 244, 0.15);
+      padding: .85rem 1.6rem;
+      border-radius: 10px;
+      background: rgba(49, 50, 68, 0.3);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(205, 214, 244, 0.1);
       cursor: pointer;
-      font-size: 1.1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cat-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+      font-size: .95rem;
+      transition: all 0.25s ease;
     }
 
     .cat-btn:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-      border-width: 2px;
-    }
-
-    .cat-btn:hover::before {
-      opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
 
     .cat-btn.heal   { border-color: #a6e3a1; color: #a6e3a1; }
-    .cat-btn.heal:hover { background: rgba(166, 227, 161, 0.15); box-shadow: 0 12px 35px rgba(166, 227, 161, 0.3); }
-    
     .cat-btn.revive { border-color: #f38ba8; color: #f38ba8; }
-    .cat-btn.revive:hover { background: rgba(243, 139, 168, 0.15); box-shadow: 0 12px 35px rgba(243, 139, 168, 0.3); }
-    
     .cat-btn.buff   { border-color: #f9e2af; color: #f9e2af; }
-    .cat-btn.buff:hover { background: rgba(249, 226, 175, 0.15); box-shadow: 0 12px 35px rgba(249, 226, 175, 0.3); }
 
     .content-page {
       padding: 4rem 2rem 6rem;
