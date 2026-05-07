@@ -1,662 +1,242 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GeyShyT</title>
-  <style>
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: sans-serif;
-      position: relative;
-      background: #11111b;
-      color: #cdd6f4;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background-image: url("backgroundimage.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: blur(6px) brightness(0.7);
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: rgba(17, 17, 26, 0.4);
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-    }
-
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 64px;
-      backdrop-filter: blur(10px);
-      background: rgba(17, 17, 26, 0.4);
-      border-bottom: 1px solid #313244;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      z-index: 100;
-    }
-
-    .logo {
-      color: #cba6f7;
-      font-size: 1.25rem;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .hamburger {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      padding: 10px 11px;
-      border-radius: 8px;
-      background: rgba(24, 24, 37, 0.95);
-      border: 0.5px solid #313244;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.2s ease;
-    }
-
-    .hamburger:hover {
-      background: rgba(30, 30, 46, 0.95);
-    }
-
-    .hamburger span {
-      width: 20px;
-      height: 2px;
-      background: #6c6c7e;
-      border-radius: 2px;
-      display: block;
-      transition: transform 0.25s ease, opacity 0.2s ease, background 0.2s ease;
-    }
-
-    .hamburger:hover span {
-      background: #cba6f7;
-    }
-
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .dropdown {
-      position: absolute;
-      top: 64px;
-      right: 0;
-      width: 200px;
-      background: rgba(17, 17, 26, 0.92);
-      backdrop-filter: blur(10px);
-      border: 1px solid #313244;
-      border-top: none;
-      border-radius: 0 0 10px 10px;
-      display: none;
-      overflow: hidden;
-    }
-    .dropdown.open { display: block; }
-
-    .dropdown a {
-      display: block;
-      padding: .9rem 1.5rem;
-      text-decoration: none;
-      border-bottom: 1px solid #1e1e2e;
-      cursor: pointer;
-      font-size: .9rem;
-      transition: background 0.15s ease;
-    }
-    .dropdown a:last-child { border-bottom: none; }
-
-    .dropdown a.link-heal {
-      color: #a6e3a1;
-    }
-    .dropdown a.link-heal:hover {
-      background: rgba(166, 227, 161, 0.07);
-      border-left: 2px solid #a6e3a1;
-      box-shadow: inset 0 0 12px rgba(166, 227, 161, 0.08);
-    }
-
-    .dropdown a.link-revive {
-      color: #f38ba8;
-    }
-    .dropdown a.link-revive:hover {
-      background: rgba(243, 139, 168, 0.07);
-      border-left: 2px solid #f38ba8;
-      box-shadow: inset 0 0 12px rgba(243, 139, 168, 0.08);
-    }
-
-    .dropdown a.link-buff {
-      color: #f9e2af;
-    }
-    .dropdown a.link-buff:hover {
-      background: rgba(249, 226, 175, 0.07);
-      border-left: 2px solid #f9e2af;
-      box-shadow: inset 0 0 12px rgba(249, 226, 175, 0.08);
-    }
-
-    main {
-      padding-top: 64px;
-      min-height: 100vh;
-    }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: calc(100vh - 64px);
-      padding: 4rem 2rem;
-      gap: 1.5rem;
-    }
-
-    .hero h1 {
-      font-size: 4rem;
-      font-weight: bold;
-      color: #cba6f7;
-    }
-
-    .hero-desc {
-      max-width: 520px;
-      color: #6c7086;
-      line-height: 1.8;
-    }
-
-    .hero-cats {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .cat-btn {
-      width: clamp(140px, 18vw, 260px);
-      padding: 1.1rem 1.2rem;
-      border-radius: 12px;
-      background: rgba(49, 50, 68, 0.35);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(205, 214, 244, 0.12);
-      cursor: pointer;
-      font-size: clamp(1rem, 1.3vw, 1.15rem);
-      font-weight: 600;
-      transition: all 0.25s ease;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-
-
-    .cat-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-
-    .cat-btn.heal   { border-color: #a6e3a1; color: #a6e3a1; }
-    .cat-btn.revive { border-color: #f38ba8; color: #f38ba8; }
-    .cat-btn.buff   { border-color: #f9e2af; color: #f9e2af; }
-
-    .content-page {
-      padding: 4rem 2rem 6rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .page-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .page-header h2 {
-      font-size: 2rem;
-      margin-bottom: .5rem;
-    }
-
-    .page-header p {
-      color: #a6adc8;
-    }
-
-    #page-heal  .page-header h2 { color: #a6e3a1; }
-    #page-revive .page-header h2 { color: #f38ba8; }
-    #page-buff  .page-header h2 { color: #f9e2af; }
-
-    .recipe-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: rgba(49, 50, 68, 0.6);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(205, 214, 244, 0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.25s ease;
-      position: relative;
-    }
-
-    .card:hover {
-      transform: translateY(-6px) scale(1.01);
-    }
-
-    #page-heal .card:hover {
-      border-color: #a6e3a1;
-      box-shadow: 0 10px 30px rgba(166, 227, 161, 0.25);
-    }
-
-    #page-revive .card:hover {
-      border-color: #f38ba8;
-      box-shadow: 0 10px 30px rgba(243, 139, 168, 0.25);
-    }
-
-    #page-buff .card:hover {
-      border-color: #f9e2af;
-      box-shadow: 0 10px 30px rgba(249, 226, 175, 0.25);
-    }
-
-    .card-img {
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-      background: linear-gradient(135deg, #181825, #1e1e2e);
-    }
-
-    .card-body { padding: 1.25rem; }
-
-    .card-name {
-      font-size: 1.05rem;
-      font-weight: bold;
-      margin-bottom: .75rem;
-      transition: color 0.3s ease;
-    }
-
-    #page-heal .card:hover .card-name { color: #a6e3a1; }
-    #page-revive .card:hover .card-name { color: #f38ba8; }
-    #page-buff .card:hover .card-name { color: #f9e2af; }
-
-    .card-effect {
-      display: inline-block;
-      font-size: .8rem;
-      padding: .4rem .9rem;
-      border-radius: 100px;
-      margin-bottom: 1rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(205, 214, 244, 0.1);
-    }
-
-    #page-heal  .card-effect { background: rgba(166, 227, 161, 0.12); color: #a6e3a1; border-color: rgba(166, 227, 161, 0.25); }
-    #page-heal .card:hover .card-effect { background: rgba(166, 227, 161, 0.2); border-color: rgba(166, 227, 161, 0.4); }
-    
-    #page-revive .card-effect { background: rgba(243, 139, 168, 0.12); color: #f38ba8; border-color: rgba(243, 139, 168, 0.25); }
-    #page-revive .card:hover .card-effect { background: rgba(243, 139, 168, 0.2); border-color: rgba(243, 139, 168, 0.4); }
-    
-    #page-buff  .card-effect { background: rgba(249, 226, 175, 0.12); color: #f9e2af; border-color: rgba(249, 226, 175, 0.25); }
-    #page-buff .card:hover .card-effect { background: rgba(249, 226, 175, 0.2); border-color: rgba(249, 226, 175, 0.4); }
-
-    .section-label {
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: #6c7086;
-      margin-top: 1rem;
-      margin-bottom: .4rem;
-      transition: color 0.3s ease;
-    }
-
-    #page-heal .card:hover .section-label { color: #a6e3a1; }
-    #page-revive .card:hover .section-label { color: #f38ba8; }
-    #page-buff .card:hover .section-label { color: #f9e2af; }
-
-    .ingredient-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-    }
-    .ingredient-list li {
-      color: #a6adc8;
-      font-size: .88rem;
-      padding-left: .75rem;
-      transition: all 0.25s ease;
-    }
-    .ingredient-list li::before {
-      content: '· ';
-      color: #6c7086;
-      transition: color 0.25s ease;
-    }
-
-    #page-heal .card:hover .ingredient-list li { color: #cdd6f4; }
-    #page-heal .card:hover .ingredient-list li::before { color: #a6e3a1; }
-    
-    #page-revive .card:hover .ingredient-list li { color: #cdd6f4; }
-    #page-revive .card:hover .ingredient-list li::before { color: #f38ba8; }
-    
-    #page-buff .card:hover .ingredient-list li { color: #cdd6f4; }
-    #page-buff .card:hover .ingredient-list li::before { color: #f9e2af; }
-
-    .steps-list {
-      list-style: none;
-      counter-reset: steps;
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-    }
-    .steps-list li {
-      counter-increment: steps;
-      display: flex;
-      gap: .6rem;
-      color: #a6adc8;
-      font-size: .88rem;
-      line-height: 1.6;
-      transition: all 0.25s ease;
-    }
-    .steps-list li::before {
-      content: counter(steps) '.';
-      color: #cba6f7;
-      min-width: 20px;
-      flex-shrink: 0;
-      transition: color 0.25s ease;
-    }
-
-    #page-heal .card:hover .steps-list li { color: #cdd6f4; }
-    #page-heal .card:hover .steps-list li::before { color: #a6e3a1; }
-    
-    #page-revive .card:hover .steps-list li { color: #cdd6f4; }
-    #page-revive .card:hover .steps-list li::before { color: #f38ba8; }
-    
-    #page-buff .card:hover .steps-list li { color: #cdd6f4; }
-    #page-buff .card:hover .steps-list li::before { color: #f9e2af; }
-
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 2.5rem; }
-      .hero-cats { flex-direction: column; }
-      .recipe-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 <div class="content">
 
-<nav>
-  <a class="logo" onclick="showPage('home')">GeyShyT</a>
-  <div class="nav-right">
-    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
+  <nav>
+    <a class="logo" id="logo-btn">GeyShyT</a>
+
+    <div class="nav-right">
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-  </div>
-  <div class="dropdown" id="dropdown">
-    <a class="link-heal"   onclick="showPage('heal');   closeMenu()">💚 Léčení</a>
-    <a class="link-revive" onclick="showPage('revive'); closeMenu()">❤️‍🔥 Oživení</a>
-    <a class="link-buff"   onclick="showPage('buff');   closeMenu()">⚡ Vylepšení</a>
-  </div>
-</nav>
 
-<main>
+    <div class="dropdown" id="dropdown">
+      <a class="link-heal" id="nav-heal">💚 Léčení</a>
+      <a class="link-revive" id="nav-revive">❤️‍🔥 Oživení</a>
+      <a class="link-buff" id="nav-buff">⚡ Vylepšení</a>
+    </div>
+  </nav>
 
-  <div id="page-home" class="page active">
-    <section class="hero">
-      <h1>GeyShyT</h1>
-      <p class="hero-desc">
-        Průvodce vařením pro dobrodruhy ve světě Teyvatu.
-      </p>
-      <div class="hero-cats">
-        <button class="cat-btn heal"   onclick="showPage('heal')">💚 Léčení</button>
-        <button class="cat-btn revive" onclick="showPage('revive')">❤️‍🔥 Oživení</button>
-        <button class="cat-btn buff"   onclick="showPage('buff')">⚡ Vylepšení</button>
-      </div>
-    </section>
-  </div>
+  <main>
 
-  <div id="page-heal" class="page">
-    <section class="content-page">
-      <header class="page-header">
-        <h2>💚 Léčení</h2>
-        <p>Jídla, která postavám obnoví ztracené životy</p>
-      </header>
-      <div class="recipe-grid">
+    <div id="page-home" class="page active">
+      <section class="hero">
+        <h1>GeyShyT</h1>
 
+        <p class="hero-desc">
+          Průvodce vařením pro dobrodruhy ve světě Teyvatu.
+        </p>
+
+        <div class="hero-cats">
+          <button class="cat-btn heal" id="btn-heal">
+            💚 Léčení
+          </button>
+
+          <button class="cat-btn revive" id="btn-revive">
+            ❤️‍🔥 Oživení
+          </button>
+
+          <button class="cat-btn buff" id="btn-buff">
+            ⚡ Vylepšení
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div id="page-heal" class="page">
+      <section class="content-page">
+        <header class="page-header">
+          <h2>💚 Léčení</h2>
+          <p>Jídla, která postavám obnoví ztracené životy</p>
+        </header>
         <article class="card">
-          <div class="card-img">🍙</div>
+          <div class="card-img">
+            <img src="lucky.png" alt="Lucky Snow Delight" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Smažená rybí bulka</div>
-            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="card-name">Lucky Snow Delight</div>
+            <span class="card-effect">💚 Restores 30% of Max HP to the selected character and regenerates 730 HP every 5s for 30s</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Ryba × 3</li>
-              <li>Mouka × 3</li>
-              <li>Sůl × 1</li>
+              <li>Rice × 3</li>
+              <li>Lotus Head × 3</li>
+              <li>Qingxin × 2</li>
+              <li>Sugar × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
           </div>
         </article>
 
         <article class="card">
-          <div class="card-img">🍙</div>
+          <div class="card-img">
+            <img src="squirrel.png" alt="Squirrel Fish" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Smažená rybí bulka</div>
-            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="card-name">Squirrel Fish</div>
+            <span class="card-effect">💚 Restores 30 - 34% of Max HP and an additional 600 - 1,900 HP to the selected character</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Ryba × 3</li>
-              <li>Mouka × 3</li>
-              <li>Sůl × 1</li>
+              <li>Fish × 4</li>
+              <li>Tomato × 2</li>
+              <li>Flour × 2</li>
+              <li>Sugar × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
           </div>
         </article>
 
         <article class="card">
-          <div class="card-img">🍙</div>
+          <div class="card-img">
+            <img src="mysterious.png" alt="Mysterious Bolognese" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Smažená rybí bulka</div>
-            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="card-name">Mysterious Bolognese</div>
+            <span class="card-effect">💚 Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Ryba × 3</li>
-              <li>Mouka × 3</li>
-              <li>Sůl × 1</li>
+              <li>Fish × 4</li>
+              <li>Tomato × 2</li>
+              <li>Flour × 2</li>
+              <li>Sugar × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div id="page-revive" class="page">
+      <section class="content-page">
+        <header class="page-header">
+          <h2>❤️‍🔥 Oživení</h2>
+          <p>Jídla, která vrátí do boje padlé postavy.</p>
+        </header>
+        <article class="card">
+          <div class="card-img">
+            <img src="golden.png" alt="Golden Shrimp Balls" />
+          </div>
+          <div class="card-body">
+            <div class="card-name">Golden Shrimp Balls</div>
+            <span class="card-effect">❤️‍🔥 Revives the selected character. Restores 900 - 1,500 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Shrimp Meat × 4</li>
+              <li>Potato × 3</li>
+            </ul>
+          </div>
+        </article>
+        
+        <article class="card">
+          <div class="card-img">
+            <img src="fullmoon.png" alt="Fullmoon Egg" />
+          </div>
+          <div class="card-body">
+            <div class="card-name">Fullmoon Egg</div>
+            <span class="card-effect">❤️‍🔥 Revives a character and restores 1,200 HP</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Fish × 4</li>
+              <li>Shrimp Meat × 2</li>
+              <li>Bird Egg × 2</li>
+              <li>Flour × 1</li>
+            </ul>
           </div>
         </article>
 
         <article class="card">
-          <div class="card-img">🍙</div>
+          <div class="card-img">
+            <img src="lighter.png" alt="Lighter-Than-Air Pancake" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Smažená rybí bulka</div>
-            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="card-name">Lighter-Than-Air Pancake</div>
+            <span class="card-effect">❤️‍🔥 Revives a character and restores 15%mof Max HP, then restores an additional 550 HP</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Ryba × 3</li>
-              <li>Mouka × 3</li>
-              <li>Sůl × 1</li>
+              <li>Berry × 3</li>
+              <li>Flour × 2</li>
+              <li>Bird Egg × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div id="page-buff" class="page">
+      <section class="content-page">
+        <header class="page-header">
+          <h2>⚡ Vylepšení</h2>
+          <p>Jídla, která posílí statistiky tvého týmu v boji.</p>
+        </header>
+        <article class="card">
+          <div class="card-img">
+            <img src="adeptus.png" alt="Adeptu's Temptation" />
+          </div>
+          <div class="card-body">
+            <div class="card-name">Adeptu's Temptation</div>
+            <span class="card-effect">⚡ Increases all party member's ATK by 260 - 372 and CRIT Rate by 8 - 12% for 300s</span>
+            <div class="section-label">Ingredience</div>
+            <ul class="ingredient-list">
+              <li>Ham × 4</li>
+              <li>Crab × 3</li>
+              <li>Shrimp Meat × 3</li>
+              <li>Matsutake × 3</li>
+            </ul>
           </div>
         </article>
 
         <article class="card">
-          <div class="card-img">🍙</div>
+          <div class="card-img">
+            <img src="jade.png" alt="Jade Parcels" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Smažená rybí bulka</div>
-            <span class="card-effect">💚 Obnoví 20 % HP + 900 HP</span>
+            <div class="card-name">Jade Parcels</div>
+            <span class="card-effect">⚡ Increases all party members' ATK by 224 - 320 and CRIT Rate 6 - 10% for 300 seconds</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Ryba × 3</li>
-              <li>Mouka × 3</li>
-              <li>Sůl × 1</li>
+              <li>Lotus Head × 3</li>
+              <li>Jueyun Chili × 2</li>
+              <li>Cabbage × 2</li>
+              <li>Ham × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
           </div>
         </article>
-
-      </div>
-    </section>
-  </div>
-
-  <div id="page-revive" class="page">
-    <section class="content-page">
-      <header class="page-header">
-        <h2>❤️‍🔥 Oživení</h2>
-        <p>Jídla, která vrátí do boje padlé postavy.</p>
-      </header>
-      <div class="recipe-grid">
 
         <article class="card">
-          <div class="card-img">🧁</div>
+          <div class="card-img">
+            <img src="cold.png" alt="Cold Cut Platter" />
+          </div>
           <div class="card-body">
-            <div class="card-name">Teyvat smažené vejce</div>
-            <span class="card-effect">❤️ Oživí 1 postavu na 15 % HP</span>
+            <div class="card-name">Cold Cut Platter</div>
+            <span class="card-effect">⚡ Increases all party members' Physical DMG by 20 - 40% for 300 seconds</span>
             <div class="section-label">Ingredience</div>
             <ul class="ingredient-list">
-              <li>Vejce × 2</li>
-              <li>Olej × 1</li>
-              <li>Sůl × 1</li>
+              <li>Ham × 1</li>
+              <li>Bacon × 1</li>
+              <li>Sausage × 1</li>
+              <li>Mint × 1</li>
             </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
           </div>
         </article>
+      </section>
+    </div>
 
-      </div>
-    </section>
-  </div>
+  </main>
 
-  <div id="page-buff" class="page">
-    <section class="content-page">
-      <header class="page-header">
-        <h2>⚡ Vylepšení</h2>
-        <p>Jídla, která posílí statistiky tvého týmu v boji.</p>
-      </header>
-      <div class="recipe-grid">
+  <footer class="footer">
+    <p>© 2026 GeyShyT — Všechna práva vyhrazena.</p>
+  </footer>
 
-        <article class="card">
-          <div class="card-img">🍛</div>
-          <div class="card-body">
-            <div class="card-name">Radikální jemný vývar</div>
-            <span class="card-effect">⚡ ATK +95 po dobu 300 sekund</span>
-            <div class="section-label">Ingredience</div>
-            <ul class="ingredient-list">
-              <li>Maso × 3</li>
-              <li>Koření × 2</li>
-              <li>Voda × 2</li>
-            </ul>
-            <div class="section-label">Postup</div>
-            <ol class="steps-list">
-              <li>bla bla</li>
-              <li>bla bla</li>
-              <li>bla bla</li>
-            </ol>
-          </div>
-        </article>
-
-      </div>
-    </section>
-  </div>
-
-</main>
 </div>
 
-<script>
-(function(){
-  const defaultPage = 'home';
-
-  function setPage(id, push = true) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const el = document.getElementById('page-' + id);
-    if (el) el.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.body.setAttribute("data-page", id);
-    if (push) {
-      history.pushState({ page: id }, '', '#' + id);
-    }
-  }
-
-  window.showPage = function(id) { setPage(id, true); };
-
-  window.toggleMenu = function() {
-    document.getElementById('hamburger').classList.toggle('open');
-    document.getElementById('dropdown').classList.toggle('open');
-  };
-
-  window.closeMenu = function() {
-    document.getElementById('hamburger').classList.remove('open');
-    document.getElementById('dropdown').classList.remove('open');
-  };
-
-  window.addEventListener('popstate', (e) => {
-    const page = (e.state && e.state.page) || location.hash.replace('#','') || defaultPage;
-    setPage(page, false);
-  });
-
-  const initial = location.hash.replace('#','') || defaultPage;
-  history.replaceState({ page: initial }, '', '#' + initial);
-  setPage(initial, false);
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeMenu(); }
-  });
-})();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
